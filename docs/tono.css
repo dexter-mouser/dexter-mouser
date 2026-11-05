@@ -1,0 +1,21 @@
+/* Tema oscuro único, igual a la cabecera del README del perfil. */
+:root {
+  color-scheme: dark;
+  --fondo: #05070b;
+  --superficie: #0d1118;
+  --superficie-2: #141922;
+  --borde: #1d2431;
+  --borde-fuerte: #2a3345;
+  --punto-rejilla: #141a25;
+  --texto: #e8ebf2;
+  --texto-suave: #949db0;
+  --acento: #ff7a1a;
+  /* Sobre este naranja el texto oscuro contrasta más que el blanco (WCAG). */
+  --texto-sobre-acento: #141824;
+  --sombra: rgba(0, 0, 0, 0.6);
+  --barra-fondo: #121722;
+  --editor-fondo: #0a0d13;
+  --editor-linea: #232b3a;
+  --fuente-base: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --fuente-mono: ui-monospace, 'Cascadia Code', Consolas, monospace;
+}

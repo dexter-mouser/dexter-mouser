@@ -1,0 +1,419 @@
+/* ---------- Piezas mientras se construyen ---------- */
+/* :where() deja la especificidad en 0 para no pisar las transiciones propias de cada pieza. */
+:where([data-capa]) {
+  transition: opacity 0.35s ease;
+}
+
+.capa-oculta {
+  opacity: 0;
+}
+
+/* Texto que Frontend aún no escribe: ocupa su espacio para que nada salte. */
+.texto-pendiente {
+  color: transparent;
+}
+
+/* Medios revela las imágenes de arriba hacia abajo. */
+/* El margen negativo deja ver sombras y anillos (como el del avatar) que un recorte en 0 cortaría. */
+[data-capa="imagen"] {
+  clip-path: inset(-48px -48px -48px -48px);
+  transition: opacity 0.2s ease, clip-path 0.9s cubic-bezier(0.45, 0.05, 0.25, 1);
+}
+
+[data-capa="imagen"].capa-oculta {
+  clip-path: inset(-48px -48px calc(100% + 48px) -48px);
+}
+
+/* Datos coloca cada etiqueta con un pequeño rebote. */
+.rebote {
+  animation: rebotar 0.45s cubic-bezier(0.3, 1.6, 0.5, 1);
+}
+
+@keyframes rebotar {
+  from { transform: scale(0.6); }
+  to { transform: scale(1); }
+}
+
+/* ---------- Capa de los agentes ---------- */
+.capa-agentes {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 40;
+  width: 100%;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.cursor-agente {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition-property: transform, opacity;
+  transition-timing-function: cubic-bezier(0.45, 0.05, 0.25, 1);
+  will-change: transform;
+}
+
+.cursor-agente svg {
+  display: block;
+  width: 20px;
+  height: 23px;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.45));
+}
+
+.cursor-agente path {
+  fill: var(--color-agente);
+  stroke: #fff;
+  stroke-width: 1.4;
+  stroke-linejoin: round;
+}
+
+.etiqueta-agente {
+  position: absolute;
+  top: 19px;
+  left: 14px;
+  padding: 3px 7px;
+  border-radius: 6px;
+  background: var(--color-agente);
+  color: #fff;
+  font: 600 11px/1 var(--fuente-base);
+  white-space: nowrap;
+  box-shadow: 0 4px 12px -4px rgba(0, 0, 0, 0.6);
+}
+
+.cursor-retirado {
+  opacity: 0;
+  transition-duration: 0.4s !important;
+}
+
+.caja-agente {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border: 1.5px solid var(--color-agente);
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--color-agente) 10%, transparent);
+  transition-property: width, height, opacity;
+  transition-timing-function: cubic-bezier(0.45, 0.05, 0.25, 1);
+}
+
+/* Tiradores de esquina, como una selección en un editor. */
+.caja-agente::before,
+.caja-agente::after {
+  content: '';
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border: 1.5px solid var(--color-agente);
+  background: #fff;
+}
+
+.caja-agente::before {
+  top: -4px;
+  left: -4px;
+}
+
+.caja-agente::after {
+  right: -4px;
+  bottom: -4px;
+}
+
+.medida-caja {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 5px;
+  padding: 3px 5px;
+  border-radius: 3px;
+  background: var(--color-agente);
+  color: #fff;
+  font: 600 10px/1 var(--fuente-mono);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.caja-terminada {
+  opacity: 0;
+  transition: opacity 0.5s ease !important;
+}
+
+.barrido-imagen {
+  position: absolute;
+  height: 2px;
+  background: var(--color-agente);
+  box-shadow: 0 0 14px 2px var(--color-agente);
+  animation-name: barrer;
+  animation-timing-function: cubic-bezier(0.45, 0.05, 0.25, 1);
+  animation-fill-mode: forwards;
+}
+
+@keyframes barrer {
+  to { transform: translateY(var(--alto-barrido)); }
+}
+
+.revision-qa {
+  position: absolute;
+  border: 1.5px dashed var(--color-agente);
+  border-radius: 6px;
+  transition: border-style 0s, background 0.3s ease, opacity 0.5s ease;
+}
+
+.revision-aprobada {
+  border-style: solid;
+  background: color-mix(in srgb, var(--color-agente) 6%, transparent);
+}
+
+.check-qa {
+  position: absolute;
+  top: -14px;
+  right: -14px;
+  width: 28px;
+  height: 28px;
+  padding: 4px;
+  border-radius: 50%;
+  background: var(--color-agente);
+  opacity: 0;
+  transform: scale(0.4);
+  transition: opacity 0.25s ease, transform 0.35s cubic-bezier(0.3, 1.6, 0.5, 1);
+}
+
+.check-qa path {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.revision-aprobada .check-qa {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* ---------- Pantalla de inicio: el equipo gira alrededor de tu avatar ---------- */
+.pantalla-inicio {
+  position: fixed;
+  inset: 0;
+  z-index: 45;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: max(20px, env(safe-area-inset-top, 0px)) max(20px, env(safe-area-inset-right, 0px)) max(20px, env(safe-area-inset-bottom, 0px)) max(20px, env(safe-area-inset-left, 0px));
+  --radio-orbita: min(170px, 36vw);
+  --vuelta: 16s;
+}
+
+.orbita-escena {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: calc(var(--radio-orbita) * 2 + 120px);
+  max-width: 100%;
+  aspect-ratio: 1;
+}
+
+.orbita {
+  position: absolute;
+  inset: 0;
+  animation: girar var(--vuelta) linear infinite;
+}
+
+/* Cada agente se ubica en su ángulo sobre el círculo... */
+.satelite {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: rotate(var(--angulo)) translateX(var(--radio-orbita)) rotate(calc(-1 * var(--angulo)));
+}
+
+/* ...y gira al revés que la órbita para que la flecha y el nombre queden derechos. */
+.satelite .cursor-orbita {
+  animation: girar var(--vuelta) linear infinite reverse;
+}
+
+.cursor-orbita {
+  position: relative;
+}
+
+.cursor-orbita svg {
+  display: block;
+  width: 20px;
+  height: 23px;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.45));
+}
+
+.cursor-orbita path {
+  fill: var(--color-agente);
+  stroke: #fff;
+  stroke-width: 1.4;
+  stroke-linejoin: round;
+}
+
+.cursor-orbita .etiqueta-agente {
+  position: absolute;
+  top: 19px;
+  left: 14px;
+}
+
+@keyframes girar {
+  to { transform: rotate(360deg); }
+}
+
+.boton-inicio {
+  position: relative;
+  z-index: 1;
+  width: 140px;
+  height: 140px;
+  padding: 4px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--fondo);
+  box-shadow: 0 0 0 3px var(--acento), 0 0 0 14px color-mix(in srgb, var(--acento) 12%, transparent);
+  cursor: pointer;
+  animation: latir 2.4s ease-in-out infinite;
+  transition: transform 0.2s ease;
+}
+
+.boton-inicio img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+.boton-inicio:hover {
+  transform: scale(1.06);
+}
+
+.boton-inicio:focus-visible {
+  outline: 3px solid var(--texto);
+  outline-offset: 18px;
+}
+
+@keyframes latir {
+  0%, 100% { box-shadow: 0 0 0 3px var(--acento), 0 0 0 14px color-mix(in srgb, var(--acento) 12%, transparent), 0 0 40px -6px var(--acento); }
+  50% { box-shadow: 0 0 0 3px var(--acento), 0 0 0 22px color-mix(in srgb, var(--acento) 6%, transparent), 0 0 70px 0 var(--acento); }
+}
+
+.inicio-titulo {
+  margin: 8px 0 0;
+  font-size: 1.4rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.inicio-ayuda {
+  margin: 0;
+  color: var(--texto-suave);
+  font: 600 13px/1 var(--fuente-mono);
+}
+
+/* ---------- Barra de construcción ---------- */
+.barra-construccion {
+  position: fixed;
+  bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+  left: 50%;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: calc(100% - 32px);
+  padding: 7px 7px 7px 14px;
+  border: 1px solid var(--borde-fuerte);
+  border-radius: 999px;
+  background: var(--barra-fondo);
+  color: var(--texto);
+  box-shadow: 0 16px 44px -12px rgba(0, 0, 0, 0.7);
+  font-size: 13px;
+  white-space: nowrap;
+  transform: translateX(-50%);
+}
+
+.barra-roles {
+  display: flex;
+  padding-left: 4px;
+}
+
+.barra-roles span {
+  width: 14px;
+  height: 14px;
+  margin-left: -4px;
+  border: 2px solid var(--barra-fondo);
+  border-radius: 50%;
+}
+
+.barra-texto strong {
+  font-variant-numeric: tabular-nums;
+}
+
+.barra-progreso {
+  width: 96px;
+  height: 4px;
+  overflow: hidden;
+  border-radius: 2px;
+  background: var(--borde-fuerte);
+}
+
+#barra-relleno {
+  display: block;
+  width: 0;
+  height: 100%;
+  background: var(--acento);
+  transition: width 0.2s ease;
+}
+
+.barra-lista {
+  display: none;
+  color: var(--acento);
+  font-weight: 700;
+}
+
+.barra-terminada .barra-progreso {
+  display: none;
+}
+
+.barra-terminada .barra-lista {
+  display: inline;
+}
+
+.barra-boton {
+  display: grid;
+  place-items: center;
+  min-width: 30px;
+  height: 30px;
+  padding: 0 11px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--superficie-2);
+  color: inherit;
+  font: inherit;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+}
+
+.barra-boton:hover {
+  background: var(--borde-fuerte);
+}
+
+.barra-cerrar {
+  padding: 0;
+}
+
+@media (max-width: 560px) {
+  .barra-texto-equipo,
+  .barra-progreso {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}

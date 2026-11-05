@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>José Botero · Portafolio</title>
+  <meta name="description" content="Portafolio de José Botero, desarrollador de software Jr.: Java, Spring Boot, JavaScript y SQL.">
+  <link rel="icon" href="img/icono.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="tono.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="agentes.css">
+</head>
+<body>
+  <header class="cabecera" data-capa="contenedor" data-seccion="cabecera">
+    <div class="cabecera-interior contenedor">
+      <a class="marca" href="#inicio">
+        <img src="img/avatar.png" alt="" width="30" height="30" data-capa="imagen">
+        <span data-capa="texto">José Botero</span>
+      </a>
+      <nav class="menu" aria-label="Principal">
+        <a href="#proyectos" data-capa="texto">Proyectos</a>
+        <a href="#contacto" data-capa="texto">Contacto</a>
+      </nav>
+      <button class="boton-icono" id="boton-reiniciar" type="button" aria-label="Repetir la construcción de la página" title="Repetir la construcción" data-capa="etiqueta">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 1 0 2.5-5.8"/><path d="M4 4v4.5h4.5"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main id="inicio">
+    <section class="hero contenedor" data-capa="contenedor" data-seccion="presentacion">
+      <div class="hero-texto">
+        <p class="ceja" data-capa="texto">github.com/dexter-mouser</p>
+        <h1 class="titulo-epico" data-capa="texto">José Botero</h1>
+        <p class="hero-rol" data-capa="texto">Desarrollador de software Jr.</p>
+        <p class="hero-stack" data-capa="texto">Java · Spring Boot · JavaScript · SQL</p>
+        <div class="hero-acciones">
+          <a class="boton boton-principal" href="#proyectos" data-capa="texto">Ver proyectos</a>
+          <a class="boton" href="#contacto" data-capa="texto">Contacto</a>
+        </div>
+      </div>
+      <img class="hero-avatar" src="img/avatar.png" alt="Avatar de José Botero" width="240" height="240" data-capa="imagen">
+    </section>
+
+    <section class="seccion contenedor" id="proyectos" data-capa="contenedor" data-seccion="proyectos">
+      <div class="seccion-cabecera">
+        <div>
+          <h2 data-capa="texto">Proyectos</h2>
+          <p class="seccion-bajada" data-capa="texto">Aplicaciones web, juegos para jugar en grupo y prácticas de programación orientada a objetos.</p>
+        </div>
+        <div class="filtros" id="filtros" role="group" aria-label="Filtrar proyectos"></div>
+      </div>
+      <div class="tarjetas" id="tarjetas"></div>
+    </section>
+
+    <section class="seccion contenedor" id="contacto" data-capa="contenedor" data-seccion="contacto">
+      <div class="seccion-cabecera">
+        <div>
+          <h2 data-capa="texto">Contacto</h2>
+          <p class="seccion-bajada" data-capa="texto">Escríbeme para proyectos, prácticas o para conversar sobre desarrollo.</p>
+        </div>
+      </div>
+      <div class="contactos" id="contactos"></div>
+    </section>
+  </main>
+
+  <footer class="pie contenedor" data-capa="contenedor" data-seccion="pie">
+    <p data-capa="texto">José Botero · Construido por 12 agentes en 5 roles</p>
+  </footer>
+
+  <div class="pantalla-inicio" id="pantalla-inicio" hidden>
+    <div class="orbita-escena">
+      <div class="orbita" id="orbita" aria-hidden="true"></div>
+      <button class="boton-inicio" id="boton-inicio" type="button" aria-label="Construir el portafolio">
+        <img src="img/avatar.png" alt="" width="132" height="132">
+      </button>
+    </div>
+    <p class="inicio-titulo">Construir portafolio</p>
+    <p class="inicio-ayuda" id="inicio-ayuda">Agentes listos</p>
+  </div>
+
+  <div class="barra-construccion" id="barra" role="region" aria-label="Construcción de la página" hidden>
+    <span class="barra-roles" id="barra-roles" aria-hidden="true"></span>
+    <span class="barra-texto barra-texto-equipo"><strong id="barra-num-agentes">0</strong> agentes · <strong id="barra-num-roles">0</strong> roles</span>
+    <span class="barra-texto"><strong id="barra-hechas">0</strong> / <span id="barra-total">0</span> capas</span>
+    <span class="barra-progreso" aria-hidden="true"><span id="barra-relleno"></span></span>
+    <span class="barra-lista">Lista</span>
+    <button class="barra-boton" id="boton-repetir" type="button">Repetir</button>
+    <button class="barra-boton" id="boton-velocidad" type="button" aria-label="Cambiar velocidad">1x</button>
+    <button class="barra-boton barra-cerrar" id="boton-cerrar" type="button" aria-label="Terminar o cerrar">
+      <svg aria-hidden="true" width="12" height="12" viewBox="0 0 12 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M2.5 2.5l7 7M9.5 2.5l-7 7"/></svg>
+    </button>
+  </div>
+
+  <div class="aviso" id="aviso" role="status" hidden></div>
+
+  <script src="js/datos.js"></script>
+  <script src="js/equipo.js"></script>
+  <script src="js/asignacion.js"></script>
+  <script src="js/efectos.js"></script>
+  <script src="js/agentes.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
