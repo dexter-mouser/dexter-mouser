@@ -1,0 +1,27 @@
+# Genera las tarjetas de estadísticas del README una vez al día y las guarda en el repo,
+# para no depender de servidores públicos que se saturan.
+name: Tarjetas del perfil
+
+on:
+  schedule:
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+
+jobs:
+  generar-tarjetas:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: vn7n24fzkq/github-profile-summary-cards@release
+        env:
+          # Usa un token personal si lo configuras como secreto; si no, el token propio del flujo.
+          GITHUB_TOKEN: ${{ secrets.SUMMARY_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
+        with:
+          USERNAME: ${{ github.repository_owner }}
+          BRANCH_NAME: 'main'
+          TIME_ZONE: 'America/Bogota'
+          # Solo el tema transparente: se ve bien con el tema claro y el oscuro de GitHub.
+          THEME: 'transparent'
+          ANIMATION: 'draw'
